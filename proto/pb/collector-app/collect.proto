@@ -1,0 +1,64 @@
+
+syntax = "proto3";
+package senseauto.apcloud.app.collectorapp.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "collector-app/fieldtest.proto";
+
+option go_package = "gitlab.senseauto.com/apcloud/library/proto/api/collector-app/v1";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "datapro-beta.senseauto.com";
+  base_path: "/api/collector-app";
+  schemes: HTTP;
+  security_definitions: {
+    security: {
+      key: "Bearer";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization";
+      }
+    }
+  }
+  security: {
+    security_requirement: {
+      key: "Bearer"
+    }
+  }
+};
+
+// 采集服务
+service CollectService {
+  //查询单车单日采集数据时长
+  rpc GetSingleCollectTime(GetIndicatorRequest) returns (GetIndicatorResponse) {
+    option (google.api.http) = {
+      get: "/noauth/v1/getSingleCollectTime"
+    };
+  }
+
+  //查询单车单日采集数据里程
+  rpc GetSingleCollectMiles(GetIndicatorRequest) returns (GetIndicatorResponse) {
+    option (google.api.http) = {
+      get: "/noauth/v1/getSingleCollectMiles"
+    };
+  }
+
+  //查询车辆路测采集里程
+  rpc GetCollectMiles(GetIndicatorRequest) returns (GetIndicatorResponse) {
+    option (google.api.http) = {
+      get: "/noauth/v1/getCollectMiles"
+    };
+  }
+
+  //查询车辆路测采集时长
+  rpc GetCollectTime(GetIndicatorRequest) returns (GetIndicatorResponse) {
+    option (google.api.http) = {
+      get: "/noauth/v1/getCollectTime"
+    };
+  }
+
+}
+

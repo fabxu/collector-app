@@ -1,0 +1,16 @@
+---
+{{ include "common.senseauto.deploys.configmap" $ }}
+---
+{{ include "common.senseauto.deploys.job" $ }}
+---
+{{ include "common.senseauto.deploys.ingress" $ }}
+{{ include "common.senseauto.deploys.ingressRoute" $ }}
+---
+{{ include "common.senseauto.deploys.traefik.middleware" $ }}
+---
+{{ include "common.senseauto.deploys.statefulset" $ }}
+{{ include "common.senseauto.deploys.deployment" $ }}
+---
+{{ include "common.senseauto.deploys.service" $ }}
+---
+{{ include "common.senseauto.deploys.cronjob" $ }}

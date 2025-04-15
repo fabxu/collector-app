@@ -1,0 +1,20 @@
+rpc_port: 5088
+http_port: 8088
+
+sqldb:
+  dbtype: mysql
+  username: datapro_rw
+  password: Senseauto2013
+  protocol: tcp
+  addr: sh.paas.sensetime.com:35976
+#  addr: mysql-default-proxy.component:3306
+  dbname: bi_db
+  param: parseTime=true
+  verbose: true
+  create_db: true
+
+http:
+  datapro-meta:
+    host: http://localhost:8083
+    timeout: 30
+    insecureSkipVerify: true

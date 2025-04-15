@@ -1,0 +1,350 @@
+# global:
+#   imageRegistry: myRegistryName
+#   imagePullSecrets:
+#     - myRegistryKeySecretName
+
+global:
+  hostArch: amd64
+  kubeVersion: 1.21
+
+fullnameOverride: collector-app
+
+image:
+  registry: registry.sensetime.com
+  repository: {{REGISTRY_GROUP}}/apcloud/app/collector-app
+  tag: {{APP_VERSION}}
+  pullPolicy: IfNotPresent
+  pullSecrets:
+    - inner
+    - regcred-sensetime
+
+replicaCount: 1
+deployKind: Deployment
+
+## String to partially override common.names.fullname template (will maintain the release name)
+##
+# nameOverride:
+
+## String to fully override common.names..fullname template
+##
+# fullnameOverride:
+
+## Deployment pod host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: []
+
+## Add labels to all the deployed resources
+##
+commonLabels: {}
+
+## Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## Kubernetes Cluster Domain
+##
+clusterDomain: cluster.local
+
+## Extra objects to deploy (value evaluated as a template)
+##
+extraDeploy: []
+
+## Command and args for running the container (set to default if not set). Use array form
+##
+command:
+  - sh
+  - -c
+  - "./collector-app run -v"
+args: []
+
+envVars:
+  sqldb:
+    dbtype: mysql
+    address: mysql-default-proxy.component.svc.cluster.local:3306
+    secret: password-secrets
+    dbname: bi_db
+    param: parseTime=true
+    show_stats: false
+    verbose: false
+    create_db: false
+
+config:
+  oss:
+    map_config:
+      endpoint: auto-oss.iagproxy.senseauto.com
+      bucket_name: sdc3-hdmap
+      config_path: VISUAL_ROAD_BD09/map-config.json
+    visual_map:
+      endpoint: auto-oss.iagproxy.senseauto.com
+    images:
+      endpoint: auto-oss.iagproxy.senseauto.com
+      bucket_name: sdc3-public
+      images_path: fieldtest_beta/images
+
+  http:
+    datapro-meta:
+      host: http://datapro-end-meta
+      timeout: 30
+      insecureSkipVerify: true
+    
+    datapro-flow:
+      host: http://datapro-end-flow
+      timeout: 30
+      insecureSkipVerify: true
+## An array to add extra env vars
+## Example:
+## extraEnvVars:
+##   - name: FOO
+##     value: "bar"
+##
+extraEnvVars:
+  - name: MINIO_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        key: aws_write_access_key_id
+        name: aws-credentials
+  - name: MINIO_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        key: aws_write_secret_access_key
+        name: aws-credentials
+
+## ConfigMap with extra environment variables
+##
+extraEnvVarsCM:
+
+## Secret with extra environment variables
+##
+extraEnvVarsSecret:
+
+## Add extra volumes
+##
+extraVolumes:
+
+## Add extra volume mounts
+##
+extraVolumeMounts:
+
+## Add extra confs
+##
+extraConfs:
+
+## Jenkins container ports to open
+##
+containerPorts:
+  http: 8088
+  grpc: 5088
+
+## Pod Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+##
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+## Container Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+##
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+  runAsNonRoot: true
+
+## Container's resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+     cpu: 300m
+     memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+## Container's liveness and readiness probes
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+##
+livenessProbe:
+  enabled: false
+#  httpGet:
+#    path: /login
+#    port: http
+#  initialDelaySeconds: 180
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  successThreshold: 1
+#  failureThreshold: 6
+readinessProbe:
+  enabled: false
+#  httpGet:
+#    path: /login
+#    port: http
+#  initialDelaySeconds: 30
+#  periodSeconds: 5
+#  timeoutSeconds: 3
+#  successThreshold: 1
+#  failureThreshold: 3
+
+## Custom Liveness probes for Jenkins
+##
+customLivenessProbe: {}
+
+## Custom Rediness probes Jenkins
+##
+customReadinessProbe: {}
+
+## Strategy to use to update Pods
+##
+updateStrategy:
+  ## StrategyType
+  ## Can be set to RollingUpdate or OnDelete
+  ##
+  type: RollingUpdate
+
+## Pod extra labels
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
+podLabels: {}
+
+## Pod annotations
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+migration:
+  enabled: false
+  ## In case you want to use a custom image for migration, set this value
+  ##
+  # image:
+  #   registry:
+  #   repository:
+  #   tag:
+  ## Command and args for running the container (set to default if not set). Use array form
+  ##
+  command:
+    - sh
+    - -c
+    - "./collector-app init"
+  args: []
+
+  ## Job annotation.
+  ##
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+
+  ## An array to add extra env vars
+  ## For example:
+  ## extraEnvVars:
+  ##  - name: GF_DEFAULT_INSTANCE_NAME
+  ##    value: my-instance
+  ##
+  extraEnvVars:
+    - name: MINIO_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          key: aws_write_access_key_id
+          name: aws-credentials
+    - name: MINIO_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          key: aws_write_secret_access_key
+          name: aws-credentials
+
+  ## ConfigMap with extra env vars:
+  ##
+  extraEnvVarsCM:
+
+  ## Secret with extra env vars:
+  ##
+  extraEnvVarsSecret:
+
+  ## Array to add extra mounts (normally used with extraVolumes)
+  ##
+  extraVolumeMounts:
+
+  ## Container resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits: {}
+    #   cpu: 500m
+    #   memory: 1Gi
+    requests: {}
+    #   cpu: 250m
+    #   memory: 256Mi
+
+
+## Service parameters
+##
+service:
+  ## K8s service type
+  ##
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  ## type is Ingress or IngressRoute
+  type: IngressRoute
+  hosts: []
+  ## default value is Prefix
+  pathType: Prefix
+  ## only valid when type is IngressRoute
+  entryPoints:
+    - web
+  extraPrefix: /api
+  ## only valid when type is IngressRoute
+  excludePaths:
+    # - method: GET
+    #   path: /xxxxx
+    #   ## default value is Exact
+    #   pathType: Exact
+    - path: /internal
+      pathType: Prefix
+  annotations: {}
+
+  middlewares:
+    - type: stripPrefix
+
+  externalMiddlewares:
+    - name: forwardauth-auth-service
+
+## Prometheus Exporter / Metrics
+##
+metrics:
+  enabled: false
+  ## Prometheus Exporter image
+  ## ref: https://hub.docker.com/r/bitnami/jenkins-exporter/tags/
+  ##
+  image:
+    # registry: docker.io
+    # repository: bitnami/jenkins-exporter
+    # tag: 0.20171225.0-debian-10-r439
+    pullPolicy: IfNotPresent
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ## Example:
+    ## pullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    pullSecrets: []

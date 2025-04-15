@@ -1,0 +1,336 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "collector-app/collect.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CollectService"
+    }
+  ],
+  "host": "datapro-beta.senseauto.com",
+  "basePath": "/api/collector-app",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/noauth/v1/getCollectMiles": {
+      "get": {
+        "summary": "查询车辆路测采集里程",
+        "operationId": "CollectService_GetCollectMiles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIndicatorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "timeRange",
+            "description": "范围时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "timeType",
+            "description": " - SELECT_BY_DATE: 按日\n - SELECT_BY_WEEK: 按周\n - SELECT_BY_MONTH: 按月",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SELECT_BY_DATE",
+              "SELECT_BY_WEEK",
+              "SELECT_BY_MONTH"
+            ],
+            "default": "SELECT_BY_DATE"
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CollectService"
+        ]
+      }
+    },
+    "/noauth/v1/getCollectTime": {
+      "get": {
+        "summary": "查询车辆路测采集时长",
+        "operationId": "CollectService_GetCollectTime",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIndicatorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "timeRange",
+            "description": "范围时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "timeType",
+            "description": " - SELECT_BY_DATE: 按日\n - SELECT_BY_WEEK: 按周\n - SELECT_BY_MONTH: 按月",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SELECT_BY_DATE",
+              "SELECT_BY_WEEK",
+              "SELECT_BY_MONTH"
+            ],
+            "default": "SELECT_BY_DATE"
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CollectService"
+        ]
+      }
+    },
+    "/noauth/v1/getSingleCollectMiles": {
+      "get": {
+        "summary": "查询单车单日采集数据里程",
+        "operationId": "CollectService_GetSingleCollectMiles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIndicatorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "timeRange",
+            "description": "范围时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "timeType",
+            "description": " - SELECT_BY_DATE: 按日\n - SELECT_BY_WEEK: 按周\n - SELECT_BY_MONTH: 按月",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SELECT_BY_DATE",
+              "SELECT_BY_WEEK",
+              "SELECT_BY_MONTH"
+            ],
+            "default": "SELECT_BY_DATE"
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CollectService"
+        ]
+      }
+    },
+    "/noauth/v1/getSingleCollectTime": {
+      "get": {
+        "summary": "查询单车单日采集数据时长",
+        "operationId": "CollectService_GetSingleCollectTime",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIndicatorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "timeRange",
+            "description": "范围时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "timeType",
+            "description": " - SELECT_BY_DATE: 按日\n - SELECT_BY_WEEK: 按周\n - SELECT_BY_MONTH: 按月",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SELECT_BY_DATE",
+              "SELECT_BY_WEEK",
+              "SELECT_BY_MONTH"
+            ],
+            "default": "SELECT_BY_DATE"
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CollectService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "GetIndicatorResponseData": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IndicatorList"
+          },
+          "title": "任务工单列表"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetIndicatorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/GetIndicatorResponseData"
+        }
+      }
+    },
+    "v1IndicatorList": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        },
+        "num": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "v1TimeType": {
+      "type": "string",
+      "enum": [
+        "SELECT_BY_DATE",
+        "SELECT_BY_WEEK",
+        "SELECT_BY_MONTH"
+      ],
+      "default": "SELECT_BY_DATE",
+      "title": "- SELECT_BY_DATE: 按日\n - SELECT_BY_WEEK: 按周\n - SELECT_BY_MONTH: 按月"
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

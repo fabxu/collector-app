@@ -1,0 +1,9 @@
+apiVersion: v2
+name: apcloud-collector-app
+description: Chart for collector-app
+version: {{BUILD_VERSION}}
+appVersion: "{{APP_VERSION}}"
+dependencies:
+  - name: apcloud-common
+    repository: {{COMMON_CHART}}
+    version: 2.x.x
